@@ -1,23 +1,23 @@
 "use client";
 import { useEffect, useState } from "react";
-import http from "@/services/http"
+import { getAllBooks } from "@/services/books";
 
 export default function Home() {
-
-  const [data, setData] = useState<{ id: number }>({ id: 0 });
+  const [books, setBooks] = useState<any[]>([])
 
   useEffect(() => {
-    http.get("/books/1").then((response) => {
-      setData(response.data);
-      console.log(response.data);
-    });
+    getAllBooks().then((books) => setBooks(books));
+  }, []);
+
+  if (books) {
+    return (
+      <div>
+        <h1>Hi</h1>
+
+        {books.map((book: any) => <div key={book._id}>{book.model_name}</div>)}
+
+
+      </div>
+    )
   }
-    , []);
-
-
-  return (
-    <div>
-      <h1>{data.id}</h1>
-    </div>
-  );
 }
