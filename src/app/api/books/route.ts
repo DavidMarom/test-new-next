@@ -7,3 +7,24 @@ export async function GET(request: Request) {
     const books = await getAllDocuments(client, 'cars');
     return NextResponse.json(books);
 }
+
+export async function POST(request: Request) {
+    const client = await connectDatabase();
+    const body = await request.json();
+    const result = await client.db('test').collection('cars').insertOne(body);
+    return NextResponse.json(result);
+}
+
+export async function PUT(request: Request) {
+    const client = await connectDatabase();
+    const body = await request.json();
+    const result = await client.db('test').collection('cars').updateOne({ _id: body._id }, { $set: body });
+    return NextResponse.json(result);
+}
+
+export async function DELETE(request: Request) {
+    const client = await connectDatabase();
+    const { id } = await request.json();
+    const result = await client.db('test').collection('cars').deleteOne({ _id: id });
+    return NextResponse.json(result);
+}
