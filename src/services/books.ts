@@ -1,5 +1,7 @@
 import http from "@/services/http";
 
+
+
 export async function getAllBooks() {
     try {
         const response = await http.get("/books");
@@ -41,12 +43,13 @@ export async function updateBook(id: string, book: any) {
 }
 
 export async function deleteBook(id: string) {
-    try {
-        const response = await http.delete(`/books/${id}`);
-        return response.data;
-    }
-    catch (error) {
-        console.error(error);
-    }
+    console.log(id);
+    // try {
+    //     const response = await http.delete(`/books/${id}`);
+    //     return response.data;
+    // }
+    // catch (error) {
+    //     console.error(error);
+    // }
 }
 

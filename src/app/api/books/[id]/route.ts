@@ -1,21 +1,14 @@
 import { NextResponse } from 'next/server';
+import { deleteDocument, connectDatabase } from '@/services/mongo';
 
-export async function GET(request: Request, params: any) {
-    const id = params.params.id;
-
-    // if you dont receive params from the client:
-    // const url = new URL(request.url);
-    // const id = url.pathname.split('/').pop();
-    return NextResponse.json(
-        { id: id },
-        {
-            status: 200,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-            },
-        }
-
-    );
+export async function DELETE(request: Request) {
+    
+    const client = await connectDatabase();
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) {
+        return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+    }
+    const result = await deleteDocument(client, 'cars', id);
+    return NextResponse.json(result);
 }

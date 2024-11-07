@@ -22,9 +22,3 @@ export async function PUT(request: Request) {
     return NextResponse.json(result);
 }
 
-export async function DELETE(request: Request) {
-    const client = await connectDatabase();
-    const { id } = await request.json();
-    const result = await client.db('test').collection('cars').deleteOne({ _id: id });
-    return NextResponse.json(result);
-}
