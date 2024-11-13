@@ -1,12 +1,21 @@
 "use client";
-import { useEffect, useState } from "react";
 import { getAllBooks, deleteBook } from "@/services/books";
 import Card from "@/components/Card/Card";
+import { useQuery } from '@tanstack/react-query';
+
+import Link from "next/link";
 
 export default function Home() {
-  const [books, setBooks] = useState<any[]>([])
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['books'],
+    queryFn: getAllBooks,
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+  });
 
-  useEffect(() => { getAllBooks().then((books) => setBooks(books)) }, []);
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading books</div>;
 
   const handleDelete = async (id: string) => {
     console.log(id);
@@ -15,21 +24,19 @@ export default function Home() {
     // setBooks(newBooks);
   }
 
-  if (books) {
-    return (
-      <div>
-        <h1>Hi</h1>
+  return (
+    <div>
+      <h1>Books</h1>
+      <Link href="/page01">Go to page 01</Link>
+      {
+        data && data.map((book: any, idx: number) => <Card
+          key={idx}
+          data={book}
+          handleDelete={handleDelete}
+        />)
+      }
 
-        {
-          books.map((book: any, idx: number) => <Card
-            key={idx}
-            data={book}
-            handleDelete={handleDelete}
-          />)
-        }
 
-
-      </div>
-    )
-  }
+    </div>
+  )
 }

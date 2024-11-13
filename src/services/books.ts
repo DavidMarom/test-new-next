@@ -1,7 +1,5 @@
 import http from "@/services/http";
 
-
-
 export async function getAllBooks() {
     try {
         const response = await http.get("/books");

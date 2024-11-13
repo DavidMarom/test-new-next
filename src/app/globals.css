@@ -14,10 +14,20 @@
   }
 }
 
+@font-face {
+  font-family: "Amatic";
+  src: url("../../public/fonts/Amatic.ttf") format("truetype");
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+h1{
+  font-size: 3rem;
+  font-family: Amatic;
 }
 
 .aaa{
